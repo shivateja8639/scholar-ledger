@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { stringify } = require('querystring')
 
-//schema design
+//schema  design
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
