@@ -1,11 +1,15 @@
-
+import {Routes,Route, Navigate} from 'react-router-dom'
+import Homepage from './pages/Homepage';
 function App() {
   return (
-    <div classNmae="container-fluid">
-      <h1 className="text-center">hello</h1>
-    </div>
+    <>
+      <Routes>
+        <Route path='/' element={
+          <Homepage/>
+          }/>
+      </Routes>
+    </>
   );
 }
-
 
 export default App;
