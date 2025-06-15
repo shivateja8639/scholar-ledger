@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, } from "antd";
-import { Link} from "react-router-dom";
-const Login = () => {
+import { Form, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+  const navigate = useNavigate();
   //from submit
   const submitHandler = async (values) => {
-    console.log(values);
+    try {
+      await axios.post('/users/login', values);
+      message.success("login success");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data.user, password: "" })
+      );
+      navigate("/");
+    } catch (error) {
+      message.error("something went wrong");
+    }
   };
-
   return (
     <>
       <div className="resgister-page ">
-        {loading && <Spinner />}
         <Form layout="vertical" onFinish={submitHandler}>
           <h1>Login Form</h1>
 
@@ -30,6 +39,5 @@ const Login = () => {
       </div>
     </>
   );
-};
 
 export default Login;
