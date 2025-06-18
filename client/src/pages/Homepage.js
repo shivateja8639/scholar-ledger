@@ -1,15 +1,123 @@
 import React, { useState } from "react";
 import { Form, Modal } from "antd";
 import Layout from "./../components/Layout/Layout";
+import Spinner from "../../../../expense-management-system/client/src/components/Layout/Spinner";
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+    const [allTransaction, setAllTransaction] = useState([])
+    //table data
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      render: (text) => <span>{moment(text).format('YYYY-MM-DD')}</span>
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount'
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type'
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category'
+    },
+    {
+      title: 'Reference',
+      dataIndex: 'reference'
+    },
+    {
+      title: 'Actions',
+      render: (text, record) => {
+        return (
+          <div>
+            <EditOutlined
+              onClick={() => {
+                setEditable(record);
+                setShowModal(true);
+              }}
+              style={{ cursor: "pointer" }}
+            />
+            <DeleteOutlined
+              className="mx-2"
+              style={{ cursor: "pointer" }}
+              onClick={(event) => {
+                event.preventDefault();
+                handleDelete(record);
+              }}
+            />
+
+          </div>
+        );
+      }
+    }
+  ]
+  
+
+  //getall transactions
+
+
+  //useEffect hook
+  useEffect(() => {
+    const getAllTransaction = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user'))
+        setLoading(true)
+        const res = await axios.post('/transactions/get-transaction',
+          {
+            userid: user._id,
+            frequency,
+            selectedDate,
+            type
+          })
+        setLoading(false)
+        setAllTransaction(res.data)
+        console.log(res.data)
+      } catch (error) {
+        console.log(error)
+        message.error('Fetch Issue with Transaction')
+      }
+    }
+    getAllTransaction()
+  }, [frequency, selectedDate, type])
+
+
   //form handling
-  const handleSubmit=(value)=>{
-    console.log(values)
+  const handleSubmit = async (values) => {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'))
+      setLoading(true)
+      if (editable) {
+        await axios.post('/transactions/edit-transaction',
+          {
+            payload: {
+              ...values,
+              userId: user._id
+            },
+            transactionId: editable._id
+          })
+        setLoading(false)
+        message.success('Transaction Updated Successfully')
+      } else {
+        await axios.post('/transactions/add-transaction',
+          { ...values, userid: user._id })
+        setLoading(false)
+        message.success('Transaction Added Successfully')
+      }
+      setShowModal(false)
+      setEditable(null)
+    } catch (error) {
+      setLoading(false)
+      message.error('failed to add transaction')
+    }
   }
   return (
     <Layout>
+      {loading && <Spinner />}
       <div className="filters">
         <div>range filters</div>
         <div>
