@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import { Form, Modal } from "antd";
+import React, { useState, useEffect } from "react";
+import { Input, Modal, Form, Select, message, Table, DatePicker } from 'antd';
+import { UnorderedListOutlined, AreaChartOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import Layout from "./../components/Layout/Layout";
-import Spinner from "../../../../expense-management-system/client/src/components/Layout/Spinner";
-
+import axios from 'axios';
+import Spinner from "../components/Layout/Spinner";
+import moment from "moment";
+import '../index.css';
+import Analytics from "../components/Layout/Analytics";
+const { RangePicker } = DatePicker;
 const HomePage = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(false);
-    const [allTransaction, setAllTransaction] = useState([])
-    //table data
+  const [allTransaction, setAllTransaction] = useState([])
+  const [frequency, setFrequency] = useState('7')
+  const [selectedDate, setSelectdate] = useState([])
+  const [type, setType] = useState('all')
+  const [viewData, setViewData] = useState('table')
+  const [editable, setEditable] = useState(null)
+  //table data
   const columns = [
     {
       title: 'Date',
@@ -56,7 +66,7 @@ const HomePage = () => {
       }
     }
   ]
-  
+
 
   //getall transactions
 
@@ -84,6 +94,24 @@ const HomePage = () => {
     }
     getAllTransaction()
   }, [frequency, selectedDate, type])
+
+
+
+  //delete handler
+  const handleDelete = async (record) => {
+  console.log("handleDelete called with:", record); // Debugging log
+  try {
+    setLoading(true);
+    await axios.post('/transactions/delete-transaction', { transactionId: record._id });
+    setLoading(false);
+    message.success('Transaction Deleted!');
+  } catch (error) {
+    console.error(error);
+    setLoading(false);
+    message.error('Unable to delete');
+  }
+};
+
 
 
   //form handling
@@ -119,21 +147,70 @@ const HomePage = () => {
     <Layout>
       {loading && <Spinner />}
       <div className="filters">
-        <div>range filters</div>
         <div>
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            Add Button
+          <h6>Select Frequency</h6>
+          <Select value={frequency} onChange={(values) => setFrequency(values)}>
+            <Select.Option value="7">Last 1 Week</Select.Option>
+            <Select.Option value="30">Last 1 Month</Select.Option>
+            <Select.Option value="365">Last 1 year</Select.Option>
+            <Select.Option value="custom">custom</Select.Option>
+          </Select>
+          {frequency === 'custom' &&
+            <RangePicker
+              value={selectedDate} onChange={(values) => setSelectdate(values)}
+            />}
+        </div>
+        <div>
+          <h6>Select Type</h6>
+          <Select value={type} onChange={(values) => setType(values)}>
+            <Select.Option value="all">All</Select.Option>
+            <Select.Option value="income">INCOME</Select.Option>
+            <Select.Option value="expense">EXPENSE</Select.Option>
+          </Select>
+        </div>
+        <div className="switch-icons">
+          <UnorderedListOutlined
+            className={`mx-2 ${viewData === 'table' ? 'active-icon' : 'inactive-icon'}`}
+            onClick={() => setViewData('table')}
+          />
+
+          <AreaChartOutlined
+            className={`mx-2 ${viewData === 'analytics' ? 'active-icon' : 'inactive-icon'}`}
+            onClick={() => setViewData('analytics')}
+          />
+        </div>
+        <div>
+          <button
+            className="btn btn-primary"
+            onClick={() => setShowModal(true)}
+          >
+            Add New
           </button>
         </div>
+
       </div>
-      <div className="content"></div>
-      <Modal
-        title="Add Transaction"
+      <div className="content">
+        {viewData === 'table' ?
+          <Table columns={columns} dataSource={allTransaction} />
+          : <Analytics allTransaction={allTransaction} />
+        }
+
+      </div>
+      <Modal title={editable ? 'Edit Transaction' : 'Add Transaction'}
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
       >
-        <Form layout="vertical" onFinish={handleSubmit}>
+        {/* Replace your Form and related handlers with the following:*/}
+
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{
+            ...editable,
+            date: editable ? moment(editable.date) : null
+          }}
+        >
           <Form.Item label="Amount" name="amount" rules={[{ required: true, message: 'Amount is required' }]}>
             <Input type='number' />
           </Form.Item>
@@ -156,6 +233,8 @@ const HomePage = () => {
               <Select.Option value="tax">tax</Select.Option>
             </Select>
           </Form.Item>
+
+          {/* 🔄 FIXED: DatePicker expects moment object */}
           <Form.Item label='Date' name="date" rules={[{ required: true, message: 'Date is required' }]}>
             <DatePicker className="w-100" />
           </Form.Item>
