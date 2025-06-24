@@ -21,13 +21,13 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 padding:15px 20px;
-box-shadow: 0 0 3px gray
+box-shadow: 0 0 3px rgb(36, 154, 217)
 }
 
 /*antd icons*/
 
 .switch-icons{
-  border:1px solid rgba(0, 0,0,0.677);
+  border:1px solid rgba(44, 34, 34, 0.677);
   border-radius: 5px;
   padding: 10px 15px
 }
@@ -37,8 +37,131 @@ box-shadow: 0 0 3px gray
 }
 
 .active-icon{
-  color: black;
+  color: rgb(20, 4, 251);
 }
 .inactive-icon{
   color:rgb(191, 190, 190);
 }
+
+/* === Custom Navbar Styling for Scholar Ledger === */
+
+.custom-navbar {
+  background-color: #fee2e2; /* Light red background */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+.custom-navbar .nav-link {
+  color: #b91c1c !important; /* Dark red name */
+  font-weight: 500;
+  font-size: 1rem;
+}
+.custom-navbar .custom-brand {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #7ce2a0, #000000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 2px rgba(6, 36, 20, 0.05);
+  letter-spacing: 1px;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-navbar .custom-brand:hover {
+  transform: scale(1.05);
+}
+
+.custom-navbar .btn {
+  background-color: #b91c1c !important;
+  border: none;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.2s ease-in-out;
+}
+
+.custom-navbar .btn:hover {
+  background-color: #FCA5A5 !important; /* Light red hover */
+  color: white;
+}
+
+
+/* === Register/Login Page Fintech Styling === */
+.resgister-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  background: linear-gradient(to bottom right, #fff1f1, #ffffff);
+}
+
+.resgister-page form {
+  background: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.resgister-page h1 {
+  color: #b91c1c;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.resgister-page .btn-primary {
+  background-color: #b91c1c;
+  border: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.resgister-page .btn-primary:hover {
+  background-color: #FCA5A5;
+  color: white;
+}
+
+
+/* === Analytics Styling === */
+.analytics-summary .card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.analytics-summary .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-summary .card-header {
+  font-weight: 600;
+  background-color: transparent;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0.5rem;
+}
+
+.analytics-summary .card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.analytics-category .card {
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 0.5rem 1rem;
+}
+
+.analytics-category .card-body h5 {
+  text-transform: capitalize;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+

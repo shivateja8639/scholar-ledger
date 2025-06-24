@@ -19,7 +19,7 @@ const Header = () => {
   };
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-light">
+      <nav className="navbar navbar-expand-lg custom-navbar">
         <div className="container-fluid">
           <button
             className="navbar-toggler"
@@ -33,9 +33,11 @@ const Header = () => {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <Link className="navbar-brand" to="/">
-              Scholar ledger
-            </Link>
+            <div className="mx-auto">
+              <Link className="navbar-brand custom-brand" to="/" style={{ textDecoration: "none" }}>
+                Scholar Ledger
+              </Link>
+            </div>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 {" "}
