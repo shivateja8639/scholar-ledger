@@ -15,6 +15,11 @@ const router = express.Router()
 //add transaction POST Method
 router.post('/add-transaction',addTransaction)
 
+//Edit transaction POST Method
+router.post('/edit-transaction',editTransaction)
+
+//Delete transaction POST Method
+router.post('/delete-transaction',deleteTransaction)
 
 //get transactions
 router.post('/get-transaction',getAllTransaction);
