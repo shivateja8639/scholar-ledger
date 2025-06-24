@@ -1,40 +1,53 @@
-const transactionModel = require('../models/transactionModel')
-const moment=require('moment')
+const transactionModel = require('../models/transactionModel');
+const moment = require('moment');
+
+// Get All Transactions
 const getAllTransaction = async (req, res) => {
-    try {
-        const { frequency, selectedDate, type } = req.body; // extract selectedDate here
-        const dateFilter = frequency !== 'custom' 
-          ? { date: 
-            { $gt: moment().subtract(Number(frequency), 'd').toDate() 
+  try {
+    const { frequency, selectedDate, type } = req.body;
 
-            } }
-          : { date: 
-            { $gt: selectedDate[0], $lte: selectedDate[1] 
-
-            } };
-          
-        const transactions = await transactionModel.find({
-            ...dateFilter,
-            userid: req.body.userid,
-            ...(type !== 'all' && {type}),
-        });
-        res.status(200).send(transactions);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error);
+    let dateFilter = {};
+    if (frequency === 'custom') {
+      dateFilter = {
+        date: {
+          $gt: selectedDate[0],
+          $lte: selectedDate[1],
+        },
+      };
+    } else if (frequency !== 'all') {
+      dateFilter = {
+        date: {
+          $gt: moment().subtract(Number(frequency), 'd').toDate(),
+        },
+      };
     }
+    // if frequency === 'all', skip date filter (fetch everything)
+
+    const transactions = await transactionModel.find({
+      ...dateFilter,
+      userid: req.body.userid,
+      ...(type !== 'all' && { type }),
+    });
+
+    res.status(200).send(transactions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
 };
 
-const deleteTransaction = async (req,res)=>{
-    try {
-        await transactionModel.findOneAndDelete({_id:req.body.transactionId})
-        res.status(200).send('Transaction deleted')
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error)
-    }
-}
+// Delete Transaction
+const deleteTransaction = async (req, res) => {
+  try {
+    await transactionModel.findOneAndDelete({ _id: req.body.transactionId });
+    res.status(200).send('Transaction deleted');
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
 
+// Edit Transaction
 const editTransaction = async (req, res) => {
   try {
     const result = await transactionModel.findOneAndUpdate(
@@ -53,14 +66,14 @@ const editTransaction = async (req, res) => {
   }
 };
 
-
+// Add Transaction
 const addTransaction = async (req, res) => {
   try {
     const { date, ...rest } = req.body;
 
     const newTransaction = new transactionModel({
       ...rest,
-      date: new Date(date) // Ensures proper Date object
+      date: new Date(date), // Ensure proper Date object
     });
 
     await newTransaction.save();
@@ -71,5 +84,9 @@ const addTransaction = async (req, res) => {
   }
 };
 
-
-module.exports={getAllTransaction,addTransaction,editTransaction,deleteTransaction}
+module.exports = {
+  getAllTransaction,
+  addTransaction,
+  editTransaction,
+  deleteTransaction,
+};

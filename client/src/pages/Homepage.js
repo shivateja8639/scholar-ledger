@@ -12,7 +12,7 @@ const HomePage = () => {
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([])
-  const [frequency, setFrequency] = useState('7')
+  const [frequency, setFrequency] = useState('all')
   const [selectedDate, setSelectdate] = useState([])
   const [type, setType] = useState('all')
   const [viewData, setViewData] = useState('table')
@@ -150,6 +150,7 @@ const HomePage = () => {
         <div>
           <h6>Select Frequency</h6>
           <Select value={frequency} onChange={(values) => setFrequency(values)}>
+            <Select.Option value="all">All Time</Select.Option>
             <Select.Option value="7">Last 1 Week</Select.Option>
             <Select.Option value="30">Last 1 Month</Select.Option>
             <Select.Option value="365">Last 1 year</Select.Option>

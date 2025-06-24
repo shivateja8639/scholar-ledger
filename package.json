@@ -1,5 +1,5 @@
 {
-  "name": "expense-management-system",
+  "name": "Scholar Ledger",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -21,8 +21,14 @@
     "antd": "^5.25.4",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
+    "colors": "^1.4.0",
     "concurrently": "^9.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "moment": "^2.30.1",
+    "mongoose": "^8.16.0",
+    "morgan": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
@@ -30,5 +36,8 @@
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
