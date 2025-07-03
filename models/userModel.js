@@ -3,20 +3,28 @@ const { stringify } = require('querystring')
 
 //schema design
 const userSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:[true,'name is required']
+    name: {
+        type: String,
+        required: [true, 'name is required']
     },
-    email:{
-        type:String,
-        required:[true,'email is required and should be unique'],
-        unique:true
+    email: {
+        type: String,
+        required: [true, 'email is required and should be unique'],
+        unique: true
     },
-    password:{
-        type:String,
-        required:[true,"password is required"],
+    password: {
+        type: String,
+        required: [true, "password is required"],
     },
-},{timestamps: true})
+    emailVerified: {
+        type: Boolean,
+        default: false,
+    },
+    emailVerificationToken: String,
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
+
+}, { timestamps: true })
 
 //export
 const userModel = mongoose.model('users', userSchema)

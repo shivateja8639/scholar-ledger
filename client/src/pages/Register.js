@@ -12,12 +12,12 @@ const Register = () => {
     try {
       setLoading(true);
       await axios.post("/users/register", values);
-      message.success("Registeration Successfull");
+      message.success("Registeration Successfull Please verify email before logging in");
       setLoading(false);
       navigate("/login");
     } catch (error) {
       setLoading(false);
-      message.error("something went wrong");
+      message.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
