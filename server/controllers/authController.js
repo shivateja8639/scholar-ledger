@@ -2,7 +2,7 @@
 const userModel = require("../models/userModel");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
-
+const bcrypt = require("bcryptjs");
 // Login Controller
 const loginController = async (req, res) => {
   try {
@@ -10,9 +10,14 @@ const loginController = async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ message: "Email and password are required" });
 
-    const user = await userModel.findOne({ email, password });
+    const user = await userModel.findOne({ email });
     if (!user)
-      return res.status(404).json({ message: "User not found or invalid credentials" });
+      return res.status(404).json({ message: "User not found" });
+
+    // 🧠 Compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
     if (!user.emailVerified)
       return res.status(403).json({ message: "Please verify your email before logging in." });
