@@ -77,7 +77,7 @@ const HomePage = () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'))
         setLoading(true)
-        const res = await axios.post('/transactions/get-transaction',
+        const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/transactions/get-transaction`,
           {
             userid: user._id,
             frequency,
@@ -102,7 +102,7 @@ const HomePage = () => {
   console.log("handleDelete called with:", record); // Debugging log
   try {
     setLoading(true);
-    await axios.post('/transactions/delete-transaction', { transactionId: record._id });
+    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/transactions/delete-transaction`, { transactionId: record._id });
     setLoading(false);
     message.success('Transaction Deleted!');
   } catch (error) {
@@ -120,7 +120,7 @@ const HomePage = () => {
       const user = JSON.parse(localStorage.getItem('user'))
       setLoading(true)
       if (editable) {
-        await axios.post('/transactions/edit-transaction',
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/transactions/edit-transaction`,
           {
             payload: {
               ...values,
@@ -131,7 +131,7 @@ const HomePage = () => {
         setLoading(false)
         message.success('Transaction Updated Successfully')
       } else {
-        await axios.post('/transactions/add-transaction',
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/transactions/add-transaction`,
           { ...values, userid: user._id })
         setLoading(false)
         message.success('Transaction Added Successfully')
@@ -235,7 +235,7 @@ const HomePage = () => {
             </Select>
           </Form.Item>
 
-          {/* 🔄 FIXED: DatePicker expects moment object */}
+          {/*  FIXED: DatePicker expects moment object */}
           <Form.Item label='Date' name="date" rules={[{ required: true, message: 'Date is required' }]}>
             <DatePicker className="w-100" />
           </Form.Item>

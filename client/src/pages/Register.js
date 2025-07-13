@@ -11,7 +11,7 @@ const Register = () => {
   const submitHandler = async (values) => {
     try {
       setLoading(true);
-      await axios.post("/users/register", values);
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/register`, values);
       message.success("Registeration Successfull Please verify email before logging in");
       setLoading(false);
       navigate("/login");

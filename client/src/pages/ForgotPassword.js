@@ -16,7 +16,8 @@ const ForgotPassword = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post("/users/forgot-password", { email });
+      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}
+/users/forgot-password`, { email });
       setMessage(res.data.message);
       antdMessage.success("Reset link sent! Please check your email.");
     } catch (err) {
