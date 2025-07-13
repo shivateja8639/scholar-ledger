@@ -1,4 +1,4 @@
-// 📁 controllers/authController.js
+//  controllers/authController.js
 const userModel = require("../models/userModel");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
@@ -46,7 +46,7 @@ const registerController = async (req, res) => {
       },
     });
 
-    const verificationURL = `http://localhost:8080/api/v1/users/verify-email/${emailVerificationToken}`;
+    const verificationURL = `${process.env.BACKEND_URL}/api/v1/users/verify-email/${emailVerificationToken}`;
 
     transporter.sendMail({
       to: email,
@@ -54,7 +54,7 @@ const registerController = async (req, res) => {
       html: `<p>Please click <a href="${verificationURL}">here</a> to verify your email address.</p>`,
     }, (err, info) => {
       if (err) {
-        console.log("❌ Error sending email:", err);
+        console.log(" Error sending email:", err);
         return res.status(500).json({ success: false, message: "Failed to send verification email." });
       } else {
         return res.status(201).json({ success: true, message: "Check your email to verify your account." });

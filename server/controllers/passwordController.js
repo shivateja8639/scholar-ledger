@@ -20,7 +20,7 @@ const forgotPasswordController = async (req, res) => {
         user.resetPasswordExpire = resetExpire;
         await user.save();
 
-        const resetURL = `http://localhost:3000/reset-password/${resetToken}`;
+        const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
         const transporter = nodemailer.createTransport({
             service: "Gmail",
@@ -48,7 +48,7 @@ const forgotPasswordController = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("❌ Forgot Password Error:", error); // ⬅️ Will log full error
+        console.error(" Forgot Password Error:", error); // ⬅️ Will log full error
         return res.status(500).json({
             success: false,
             message: "Server error",
